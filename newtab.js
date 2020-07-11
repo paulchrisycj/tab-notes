@@ -1,15 +1,15 @@
 ;(() => {
   // FIXME: Should use uuid instead of index as key for storage
   /** DB
-    * {
-    *   version: <number>,
-    *   mode: <string>
-    *   list: [{
-    *       content: <string>
-    *       time: <number>
-    *   }]
-    * }
-    **/
+   * {
+   *   version: <number>,
+   *   mode: <string>
+   *   list: [{
+   *       content: <string>
+   *       time: <number>
+   *   }]
+   * }
+   **/
 
   const newtab_script = () => {
     const THEMES = {
@@ -198,4 +198,12 @@
   window.addEventListener('load', () => {
     newtab_script().init()
   })
+
+
+  $(document).ready(function(){
+    $('#bold-button').click(function(e){
+      e.preventDefault();
+      document.execCommand( 'bold',false,null);
+    })
+  });
 })()
