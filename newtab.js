@@ -205,5 +205,13 @@
       e.preventDefault();
       document.execCommand( 'bold',false,null);
     })
+    $('#italic-button').click(function(e){
+      e.preventDefault();
+      document.execCommand('italic',false,null);
+    })
+    $('#underline-button').click(function(e){
+      e.preventDefault();
+      document.execCommand('underline',false,null);
+    })
   });
 })()
