@@ -212,6 +212,9 @@
     $('#print-button').click(function(e){
       e.preventDefault();
       printDiv("note-content");
+    $('#underline-button').click(function(e){
+      e.preventDefault();
+      document.execCommand('underline',false,null);
     })
   });
   function printDiv(divName){
