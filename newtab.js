@@ -198,7 +198,15 @@
   window.addEventListener('load', () => {
     newtab_script().init()
   })
+  function downloadInnerHtml(filename, elId, mimeType) {
+    var elHtml = document.getElementById(note-content).innerHTML;
+    var link = document.createElement('a');
+    mimeType = mimeType || 'text/plain';
 
+    link.setAttribute('download', filename);
+    link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+    link.click();
+  }
 
   $(document).ready(function(){
     $('#bold-button').click(function(e){
@@ -216,6 +224,9 @@
       e.preventDefault();
       document.execCommand('underline',false,null);
     })
+    $('#download-button').click(function(){
+      downloadInnerHtml(fileName, 'main','text/html');
+    });
   });
   function printDiv(divName){
     var printContents = document.getElementById(divName).innerHTML;
