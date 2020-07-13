@@ -16,7 +16,7 @@
       night: "night",
       day: "day"
     }
-    const $textarea = document.querySelector('textarea')
+    const $textarea = document.querySelector('#note-content')
     const $list = document.querySelector('#list')
     const $mode_switcher = document.querySelector('#mode-switcher')
     const $status = document.querySelector('#status')
