@@ -32,9 +32,11 @@
       return emptyNote
     }
 
+    
+
     const _render = () => {
       const _renderList = list => {
-        const _makeTitleString = content => content.substr(0, 10).replace(/\n/g, '') || '<span class="empty-string">(EMPTY)</span>'
+        const _makeTitleString = content => content != '' ? content : '<span class="empty-string">(EMPTY)</span>'
         const $ul = document.querySelector('ul')
 
         $ul.innerHTML = list.sort((a, b) => b.time - a.time).map((item, index) => {
@@ -77,7 +79,7 @@
       }
 
       const _renderNote = note => {
-        $textarea.value = note.content || ''
+        $textarea.innerHTML = note.content || ''
         $textarea.focus()
       }
 
@@ -100,8 +102,9 @@
       // auto saving and indicator
       let write_timeout, saved_timeout
       $textarea.addEventListener('keyup', () => {
-        if (data.list[currentNoteId].content === $textarea.value) { return }
-
+        // console.log($textarea.innerHTML)
+        if (data.list[currentNoteId].content === $textarea.innerHTML) { return }
+        console.log(currentNoteId)
         $status.classList.remove('hide')
         $status.textContent = 'Saving...'
 
@@ -112,7 +115,7 @@
             $status.textContent = 'Saved.'
           }
 
-          data.list[currentNoteId].content = $textarea.value
+          data.list[currentNoteId].content = $textarea.innerHTML
           data.list[currentNoteId].time = (new Date()).getTime()
           currentNoteId = 0
           browser.storage.sync.set({ list: data.list })
