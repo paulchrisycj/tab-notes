@@ -1,22 +1,22 @@
 ;(() => {
   // FIXME: Should use uuid instead of index as key for storage
   /** DB
-    * {
-    *   version: <number>,
-    *   mode: <string>
-    *   list: [{
-    *       content: <string>
-    *       time: <number>
-    *   }]
-    * }
-    **/
+   * {
+   *   version: <number>,
+   *   mode: <string>
+   *   list: [{
+   *       content: <string>
+   *       time: <number>
+   *   }]
+   * }
+   **/
 
   const newtab_script = () => {
     const THEMES = {
       night: "night",
       day: "day"
     }
-    const $textarea = document.querySelector('textarea')
+    const $textarea = document.querySelector('#note-content')
     const $list = document.querySelector('#list')
     const $mode_switcher = document.querySelector('#mode-switcher')
     const $status = document.querySelector('#status')
@@ -32,9 +32,11 @@
       return emptyNote
     }
 
+    
+
     const _render = () => {
       const _renderList = list => {
-        const _makeTitleString = content => content.substr(0, 10).replace(/\n/g, '') || '<span class="empty-string">(EMPTY)</span>'
+        const _makeTitleString = content => content != '' ? content : '<span class="empty-string">(EMPTY)</span>'
         const $ul = document.querySelector('ul')
 
         $ul.innerHTML = list.sort((a, b) => b.time - a.time).map((item, index) => {
@@ -77,7 +79,7 @@
       }
 
       const _renderNote = note => {
-        $textarea.value = note.content || ''
+        $textarea.innerHTML = note.content || ''
         $textarea.focus()
       }
 
@@ -100,8 +102,9 @@
       // auto saving and indicator
       let write_timeout, saved_timeout
       $textarea.addEventListener('keyup', () => {
-        if (data.list[currentNoteId].content === $textarea.value) { return }
-
+        // console.log($textarea.innerHTML)
+        if (data.list[currentNoteId].content === $textarea.innerHTML) { return }
+        console.log(currentNoteId)
         $status.classList.remove('hide')
         $status.textContent = 'Saving...'
 
@@ -112,7 +115,7 @@
             $status.textContent = 'Saved.'
           }
 
-          data.list[currentNoteId].content = $textarea.value
+          data.list[currentNoteId].content = $textarea.innerHTML
           data.list[currentNoteId].time = (new Date()).getTime()
           currentNoteId = 0
           browser.storage.sync.set({ list: data.list })
@@ -198,4 +201,46 @@
   window.addEventListener('load', () => {
     newtab_script().init()
   })
+
+  $(document).ready(function(){
+    $('#bold-button').click(function(e){
+      e.preventDefault();
+      document.execCommand( 'bold',false,null);
+    })
+    $('#italic-button').click(function(e){
+      e.preventDefault();
+      document.execCommand('italic',false,null);
+    })
+    $('#print-button').click(function(e) {
+      e.preventDefault();
+      printDiv("note-content");
+    })
+    $('#underline-button').click(function(e){
+      e.preventDefault();
+      document.execCommand('underline',false,null);
+    })
+    $('#download-button').click(function(){
+      downloadInnerHtml("fileName", 'main','text/html');
+    })
+  });
+  function downloadInnerHtml(filename, elId, mimeType) {
+    var elHtml = document.getElementById('note-content').innerHTML;
+    var link = document.createElement('a');
+    mimeType = mimeType || 'text/plain';
+
+    link.setAttribute('download', filename);
+    link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+    link.click();
+  }
+  function printDiv(divName){
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+
+  }
 })()
