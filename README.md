@@ -9,6 +9,8 @@ Open new tab and write anything.
 * **Lightweight and fast**
 * **Multi-notes**
 * **Browser-action with shortcut**: You could use it without changing your current new tab page
+* **Support Rich Text Functions**: You are able to bold, italic and underline your texts
+* **Print and Download**: You are able to print the text that you typed, as well as download the text as HTML
 * Open-source
 
 ## Shortcuts
